@@ -1,49 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-   <title>RockPaperScissor</title>
+  <head>
+    <title>RockPaperScissor</title>
     <style>
-        .title{
-            font-size: 40px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body{
-            background-color: rgb(25,25,25);
-            color: white;
-        }
-        .move{
-            width:80px;
-            padding: 20px;
-        }
-        .move-bttn{
-            cursor: pointer;
-            margin-bottom: 30px;
-            margin-right: 20px;
-            border-radius: 50% ;
-            padding: 0;
-            background-color: transparent;
-            border: 2px solid white;
-
-        }
-        .para1{
-            font-weight: bold;
-            font-size: 20px;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+      .title {
+        font-size: 40px;
+        font-family: monospace;
+      }
+      body {
+        background-color: rgb(25, 25, 25);
+        color: white;
+      }
+      .move {
+        width: 80px;
+        padding: 20px;
+      }
+      .move-bttn {
+        cursor: pointer;
+        margin-bottom: 30px;
+        margin-right: 20px;
+        border-radius: 50%;
+        padding: 0;
+        background-color: transparent;
+        border: 2px solid white;
+      }
+      .para1 {
+        font-family: monospace;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: Arial, Helvetica, sans-serif;
+      }
     </style>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <p class="title">Rock Paper Scissor Game</p>
-    <button class="move-bttn" onclick="PlayGame('Rock')"><img class="move" src="Images/rock-emoji.png"></button>
-    <button class="move-bttn" onclick="PlayGame('Paper')"><img class="move" src="Images/paper-emoji.png"></button>
-    <button class="move-bttn" onclick="PlayGame('Scissor')"><img class="move" src="Images/scissors-emoji.png"></button>
+    <button class="move-bttn" onclick="PlayGame('Rock')">
+      <img class="move" src="Images/rock-emoji.png" />
+    </button>
+    <button class="move-bttn" onclick="PlayGame('Paper')">
+      <img class="move" src="Images/paper-emoji.png" />
+    </button>
+    <button class="move-bttn" onclick="PlayGame('Scissor')">
+      <img class="move" src="Images/scissors-emoji.png" />
+    </button>
     <p class="JS-Score">JS-score</p>
     <p class="para1"></p>
     <p class="para2"></p>
-    
-    <button onclick="score={
+
+    <button
+      onclick="score={
         wins:0,
         loss:0,
         tie:0,
@@ -51,125 +57,90 @@
     UpdateScore();
     document.querySelector('.para1').innerHTML='';
             document.querySelector('.para2').innerHTML=``;
-    ">Reset Score</button>
+    "
+    >
+      Reset Score
+    </button>
     <script>
-        const scoreElement=document.querySelector('.JS-Score');
-        
-        let CM;
-        let score= {
-            wins:0,
-            loss:0,
-            tie:0,
+      const scoreElement = document.querySelector(".JS-Score");
+
+      let CM;
+      let score = {
+        wins: 0,
+        loss: 0,
+        tie: 0,
+      };
+
+      UpdateScore();
+
+      function PlayGame(PM) {
+        let CM = PickComputerMove();
+        if (CM === PM) {
+          score.tie++;
+          Tie(PM, CM);
+        } else if (CM === "Rock") {
+          if (PM === "Paper") {
+            score.wins++;
+            win(PM, CM);
+          } else {
+            score.loss++;
+            Loss(PM, CM);
+          }
+        } else if (CM === "Paper") {
+          if (PM === "Scissor") {
+            score.wins++;
+            win(PM, CM);
+          } else {
+            score.loss++;
+            Loss(PM, CM);
+          }
+        } else if (CM === "Scissor") {
+          if (PM === "Rock") {
+            score.wins++;
+            win(PM, CM);
+          } else {
+            score.loss++;
+            Loss(PM, CM);
+          }
         }
-        
+
         UpdateScore();
-      
-        function PlayGame(PM)
-        {
-            let CM=PickComputerMove();
-            if(CM===PM)
-            {
-                score.tie++;
-                Tie(PM,CM);
-               
-                   
-            }
-            else if(CM==='Rock')
-            {
-                if(PM==='Paper')
-                {
-                    score.wins++;
-                    win(PM,CM);
-
-                    
-                    
-                    
-                }
-                else{
-                    score.loss++;
-                    Loss(PM,CM);
-                    
-                }
-            }
-            else if(CM==='Paper')
-            {
-                if(PM==='Scissor')
-                {
-                    score.wins++;
-                    win(PM,CM);
-                    
-                    
-                }
-                else{
-                    score.loss++;
-                    Loss(PM,CM);
-                    
-                }
-            }
-            else if(CM==='Scissor')
-            {
-                if(PM==='Rock')
-                {
-                    score.wins++;
-                    win(PM,CM);
-                    
-                   
-                }
-                else{
-                    score.loss++;
-                    Loss(PM,CM);
-                    
-                }
-            }
-
-
-           UpdateScore();
+      }
+      function PickComputerMove() {
+        let random = Math.random();
+        if (random >= 0 && random < 1 / 3) {
+          CM = "Rock";
+        } else if (random >= 1 / 3 && random < 2 / 3) {
+          CM = "Paper";
+        } else if (random >= 2 / 3 && random <= 1) {
+          CM = "Scissor";
         }
-        function PickComputerMove()
-        {
-            let random=Math.random();
-            if(random>=0 && random<1/3)
-            {
-                CM='Rock';
-
-            }
-            else if(random>=1/3 && random<2/3)
-            {
-                CM='Paper';
-            }
-            else if(random>=2/3 && random<=1)
-            {
-                CM='Scissor'
-            }
-            return CM;
-        }
-        function UpdateScore()
-        {
-            scoreElement.innerHTML=`Wins: ${score.wins}, Loss: ${score.loss}, Tie: ${score.tie}`;
-
-        }
-        function win(PM,CM)
-        {
-            console.log(`Win ${PM} ${CM}`);
-            document.querySelector('.para1').innerHTML='You Win.';
-            document.querySelector('.para2').innerHTML=`PlayerMove:${PM} || ComputerMove:${CM}`;
-            
-        }
-        function Loss(PM,CM)
-        {
-            console.log(`Lose ${PM} ${CM}`);
-            document.querySelector('.para1').innerHTML='You Lose.';
-            document.querySelector('.para2').innerHTML=`PlayerMove:${PM} || ComputerMove:${CM}`;
-        }
-        function Tie(PM,CM)
-        {
-            console.log(`Tie ${PM} ${CM}`);
-            document.querySelector('.para1').innerHTML='Tie.';
-            document.querySelector('.para2').innerHTML=`PlayerMove:${PM} || ComputerMove:${CM}`;
-         }
-
-
-
+        return CM;
+      }
+      function UpdateScore() {
+        scoreElement.innerHTML = `Wins: ${score.wins}, Loss: ${score.loss}, Tie: ${score.tie}`;
+      }
+      function win(PM, CM) {
+        console.log(`Win ${PM} ${CM}`);
+        document.querySelector(".para1").innerHTML = "You Win.";
+        document.querySelector(
+          ".para2"
+        ).innerHTML = `PlayerMove:${PM} || ComputerMove:${CM}`;
+      }
+      function Loss(PM, CM) {
+        console.log(`Lose ${PM} ${CM}`);
+        document.querySelector(".para1").innerHTML = "You Lose.";
+        document.querySelector(
+          ".para2"
+        ).innerHTML = `PlayerMove:${PM} || ComputerMove:${CM}`;
+      }
+      function Tie(PM, CM) {
+        console.log(`Tie ${PM} ${CM}`);
+        document.querySelector(".para1").innerHTML = "Tie.";
+        document.querySelector(
+          ".para2"
+        ).innerHTML = `PlayerMove:${PM} || ComputerMove:${CM}`;
+      }
     </script>
-</body>
+  </body>
 </html>
